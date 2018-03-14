@@ -1,11 +1,11 @@
 // GLOBALS
+var sound = new Audio ("multimediabutton.mp3");
 var w = 1000,h = 900;
 var padding = 2;
 var nodes = [];
 var force, node, data, maxVal;
 var brake = 0.2;
 var radius = d3.scale.sqrt().range([10, 20]);
-var sound = new Audio ("multimediabutton.mp3");
 
 var partyCentres = { 
     con: { x: w / 3, y: h / 3.3}, 
@@ -51,10 +51,11 @@ function transition(name) {
 		$("#view-donor-type").fadeOut(250);
 		$("#view-source-type").fadeOut(250);
 		$("#view-party-type").fadeOut(250);
+		$("#view-donation-amount").fadeOut(250);
 		return total();
 		//location.reload();
 	}
-	if (name === "group-by-party") {
+	if (name === "group-by-party"){
 		sound.currentTime=0;
 		sound.play();
 		$("#initial-content").fadeOut(250);
@@ -62,9 +63,10 @@ function transition(name) {
 		$("#view-donor-type").fadeOut(250);
 		$("#view-source-type").fadeOut(250);
 		$("#view-party-type").fadeIn(1000);
+		$("#view-donation-amount").fadeOut(250);
 		return partyGroup();
 	}
-	if (name === "group-by-donor-type") {
+	if (name === "group-by-donor-type"){
 		sound.currentTime=0;
 		sound.play();
 		$("#initial-content").fadeOut(250);
@@ -72,9 +74,10 @@ function transition(name) {
 		$("#view-party-type").fadeOut(250);
 		$("#view-source-type").fadeOut(250);
 		$("#view-donor-type").fadeIn(1000);
+		$("#view-donation-amount").fadeOut(250);
 		return donorType();
 	}
-	if (name === "group-by-money-source") {
+	if (name === "group-by-money-source"){
 		sound.currentTime=0;
 		sound.play();
 		$("#initial-content").fadeOut(250);
@@ -82,6 +85,7 @@ function transition(name) {
 		$("#view-donor-type").fadeOut(250);
 		$("#view-party-type").fadeOut(250);
 		$("#view-source-type").fadeIn(1000);
+		$("#view-donation-amount").fadeOut(250);
 		return fundsType();
 	}
 	if (name === "group-by-donation-amount"){
@@ -96,7 +100,6 @@ function transition(name) {
 		return donationType();
 	}
 }
-
 function start() {
 
 	node = nodeGroup.selectAll("circle")
@@ -115,7 +118,6 @@ function start() {
 		.on("mouseover", mouseover)
 		.on("mouseout", mouseout)
 		.on("click", function(d) { window.open("http://www.google.com/search?q=" + d.donor);});
-
 		// Alternative title based 'tooltips'
 		// node.append("title")
 		//	.text(function(d) { return d.donor; });
@@ -411,13 +413,11 @@ function mouseover(d, i) {
 	mosie.classed("active", true);
 	d3.select(".tooltip")
   	.style("left", (parseInt(d3.select(this).attr("cx") - 80) + offset.left) + "px")
-    .style("top", (parseInt(d3.select(this).attr("cy") - (d.radius+150)) + offset.top) + "px")
-		.html(infoBox)
-			.style("display","block");
-	
+    	.style("top", (parseInt(d3.select(this).attr("cy") - (d.radius+150)) + offset.top) + "px")
+	.html(infoBox)
+	.style("display","block");
 	var voice = new SpeechSynthesisUtterance("Donators name is " + donor + " and the donation amount is " + amount + " pounds");
 	window.speechSynthesis.speak(voice);
-	
 	
 	}
 
@@ -427,7 +427,6 @@ function mouseout() {
 
 		mosie.classed("active", false);
 		window.speechSynthesis.cancel();
-
 		d3.select(".tooltip")
 			.style("display", "none");
 		}
